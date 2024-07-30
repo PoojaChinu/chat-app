@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     height: "44%",
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 4,
   },
 });
 
