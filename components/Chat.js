@@ -1,7 +1,19 @@
 import { useState, useEffect } from "react";
 import { Bubble, GiftedChat, InputToolbar } from "react-native-gifted-chat";
-import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  View,
+} from "react-native";
+import {
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+  addDoc,
+} from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Chat = ({ db, route, navigation, isConnected }) => {
@@ -51,6 +63,13 @@ const Chat = ({ db, route, navigation, isConnected }) => {
     };
   }, [isConnected]);
 
+  const onSend = (newMessages) => {
+    setMessages((previousMessages) =>
+      GiftedChat.append(previousMessages, newMessages)
+    );
+    addDoc(collection(db, "messages"), newMessages[0]);
+  };
+
   const cacheMessages = async (messagesToCache) => {
     try {
       await AsyncStorage.setItem("messages", JSON.stringify(messagesToCache));
@@ -58,6 +77,7 @@ const Chat = ({ db, route, navigation, isConnected }) => {
       console.log(error.message);
     }
   };
+
   // Call this function if the isConnected prop turns out to be false in useEffect()
   const loadCachedMessages = async () => {
     // The empty array is for cachedMessages in case AsyncStorage() fails when the messages item hasn’t been set yet in AsyncStorage.
