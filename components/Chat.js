@@ -1,15 +1,26 @@
 import { useState, useEffect } from "react";
 import { Bubble, GiftedChat, InputToolbar } from "react-native-gifted-chat";
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+  addDoc,
+} from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomActions from "./CustomActions";
 import MapView from "react-native-maps";
 
-const Chat = ({ db, route, navigation, isConnected }) => {
+const Chat = ({ db, route, navigation, isConnected, storage }) => {
   const { userID } = route.params;
   const { name, background } = route.params;
   const [messages, setMessages] = useState([]);
+
+  // Sends the newest message to Firestore
+  const onSend = (newMessages) => {
+    addDoc(collection(db, "messages"), newMessages[0]);
+  };
 
   useEffect(() => {
     let unsubMessages = null;

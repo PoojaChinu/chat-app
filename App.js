@@ -25,7 +25,7 @@ LogBox.ignoreLogs(["AsyncStorage has been extracted from"]);
 // Create the navigator
 const Stack = createNativeStackNavigator();
 
-const storage = getStorage(app);
+let app;
 
 const App = () => {
   // Define a new state that represents the network connectivity status
@@ -52,7 +52,7 @@ const App = () => {
   };
 
   // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
+  app = initializeApp(firebaseConfig);
 
   // Initialize Cloud Firestore and get a reference to the service
   const db = getFirestore(app);
