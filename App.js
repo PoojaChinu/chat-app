@@ -2,6 +2,7 @@
 import Start from "./components/Start";
 import Chat from "./components/Chat";
 import { initializeApp } from "firebase/app";
+import { getStorage } from "firebase/storage";
 import {
   getFirestore,
   disableNetwork,
@@ -23,6 +24,8 @@ LogBox.ignoreLogs(["AsyncStorage has been extracted from"]);
 
 // Create the navigator
 const Stack = createNativeStackNavigator();
+
+let app;
 
 const App = () => {
   // Define a new state that represents the network connectivity status
@@ -49,10 +52,20 @@ const App = () => {
   };
 
   // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
+  app = initializeApp(firebaseConfig);
 
   // Initialize Cloud Firestore and get a reference to the service
   const db = getFirestore(app);
+
+  // Initialize Firebase Storage
+  let storage = null;
+
+  try {
+    storage = getStorage(app);
+  } catch (error) {
+    console.log("Error - could not load Firebase Storage");
+    Alert.alert("Chat couldn't connect to the file storage. Try again later.");
+  }
 
   return (
     // Create a stack navigator with initial route start
@@ -62,8 +75,9 @@ const App = () => {
         <Stack.Screen name="Chat">
           {(props) => (
             <Chat
-              db={db}
               isConnected={connectionStatus.isConnected}
+              db={db}
+              storage={storage}
               {...props}
             />
           )}
