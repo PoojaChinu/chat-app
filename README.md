@@ -20,7 +20,7 @@ This chat app for mobile devices using React Native. The app will provide users 
 3. The chat must provide users with two additional communication features: sending images and location data.
 4. Data gets stored online and offline.
 
-Demo Recording [https://github.com/PoojaChinu/meet/blob/main/demo/finalRecording.mov]
+Demo Recording [https://github.com/PoojaChinu/chat-app/blob/main/demo/finalRecording.mov]
 
 ## Set Up the App
 
